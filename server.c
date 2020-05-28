@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
     broadcast.sin_addr.s_addr = INADDR_BROADCAST;
     
     if(bind(sock, (struct sockaddr *)&broadcast, size) == -1)
-    if (sock == -1)
     {
         fprintf(stderr, "Incorrect server bind\n");
         exit(1);
