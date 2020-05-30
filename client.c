@@ -36,13 +36,16 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    puts("Enter broadcast message:");
-
-    fgets(buf, 1024, stdin);
-    if (sendto(sock, buf, sizeof(buf), 0, (struct sockaddr*) &broadcast, size) == -1)
+    puts("Enter messages:");
+    while (1)
     {
-        fprintf(stderr, "Incorrect client send\n");
-        exit(1);
+        fgets(buf, 1024, stdin);
+
+        if (sendto(sock, buf, sizeof(buf), 0, (struct sockaddr*) & broadcast, size) == -1)
+        {
+            fprintf(stderr, "Incorrect client send\n");
+            exit(1);
+        }
     }
     shutdown(sock, SHUT_RDWR);
 

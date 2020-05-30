@@ -26,22 +26,25 @@ int main(int argc, char *argv[])
 
     broadcast.sin_family = AF_INET;
     broadcast.sin_port = htons(0xAABB);
-    broadcast.sin_addr.s_addr = INADDR_BROADCAST;
+    broadcast.sin_addr.s_addr = inet_addr("192.168.1.100");
     
-    if(bind(sock, (struct sockaddr *)&broadcast, size) == -1)
+    if (bind(sock, (struct sockaddr*) &broadcast, size) == -1)
     {
         fprintf(stderr, "Incorrect server bind\n");
         exit(1);
     }
 
-    if (recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr*) &broadcast, &size) == -1)
+    while (1)
     {
-        fprintf(stderr, "Incorrect server recv\n");
-        exit(1);
-    }
+        if(recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr*) &broadcast, &size) == -1)
+        {
+            fprintf(stderr, "Incorrect server recv\n");
+            exit(1);
+        }
 
+        printf("%s", buf);
+    }
     shutdown(sock, SHUT_RDWR);
-    puts(buf);
 
     return 0;
 }
